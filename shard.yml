@@ -4,6 +4,6 @@ version: 0.1.0
 authors:
   - Billy.Zheng <vil963@gmail.com>
 
-crystal: 1.5.0
+crystal: ">= 0.35.0"
 
 license: MIT

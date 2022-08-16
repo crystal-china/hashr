@@ -1,6 +1,24 @@
-# TODO: Write documentation for `Hashr`
-module Hashr
-  VERSION = "0.1.0"
+class Hashr
+  getter obj
 
-  # TODO: Put your code here
+  def initialize(json : Hash(String, JSON::Any) | JSON::Any)
+    @obj = json
+  end
+
+  macro method_missing(key)
+    def {{ key.id }}
+      value = obj[{{ key.id.stringify }}]
+
+      Hashr.new(value)
+    end
+  end
+
+  def ==(other)
+    obj == other
+  end
+
+  # Can't redefine nil?
+  # def nil?
+  #   obj.nil?
+  # end
 end
