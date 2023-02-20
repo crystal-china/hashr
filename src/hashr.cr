@@ -1,3 +1,5 @@
+require "./hashr/version"
+
 class Hashr
   getter obj
 
