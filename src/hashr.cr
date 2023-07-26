@@ -19,9 +19,12 @@ class Hashr
   macro method_missing(key)
     def {{ key.id }}
       value = @obj[{{ key.id.stringify }}]
-      # pp typeof(value)
 
       Hashr.new(value)
+    end
+
+    def {{ key.id }}=(value)
+      @obj[{{ key.id.stringify }}] = value
     end
   end
 

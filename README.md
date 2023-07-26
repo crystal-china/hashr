@@ -61,6 +61,34 @@ describe "daily reports" do
 end
 ```
 
+You can use Hashr as model object, like this:
+
+```crystal
+it "use hashr as model object" do
+    contacts = [
+      {
+        id:    1,
+        first: "billy",
+        last:  "zheng",
+        phone: "18612385678",
+        email: "billy@gmail.com",
+      },
+      {
+        id:    2,
+        first: "xuan",
+        last:  "zheng",
+        phone: "18512345678",
+        email: "retired@qq.com",
+      },
+    ]
+
+    models = contacts.map { |e| Hashr.new(e) }
+
+    models.each do |contact|
+      puts "#{contact.first}.#{contact.last}: phone: #{contact.phone}, email: #{contact.email}"
+    end
+```
+
 ## Limit
 
 For verify a value is nil, you have to use `eq`, `be_nil` not work because Crystal don't allow us redefine #nil? method on any object.
