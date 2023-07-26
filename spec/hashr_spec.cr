@@ -2,7 +2,7 @@ require "./spec_helper"
 require "json"
 
 describe "Hashr" do
-  it "hashr works" do
+  it "works with Hash(String, JSON::Any)" do
     h = {
       "bar"          => "bar",
       "helloWorld"   => "baz",
@@ -31,6 +31,32 @@ describe "Hashr" do
     # value.foo.literalValue.nilValue.should be_nil # not work
   end
 
+  it "works with JSON::Any" do
+    h = {
+      "bar"        => "bar",
+      "helloWorld" => "baz",
+      "array"      => ["1", "2", "3"],
+    }
+    value = Hashr.new(JSON.parse(h.to_json))
+
+    value.bar.should eq "bar"
+    value.helloWorld.should eq "baz"
+    value.array.should eq ["1", "2", "3"]
+  end
+
+  it "works with object which respond to #to_json" do
+    h = {
+      "bar"        => "bar",
+      "helloWorld" => "baz",
+      "array"      => ["1", "2", "3"],
+    }
+    value = Hashr.new(h)
+
+    value.bar.should eq "bar"
+    value.helloWorld.should eq "baz"
+    value.array.should eq ["1", "2", "3"]
+  end
+
   it "raise exception if key not exists" do
     h = {"foo" => "bar"}.to_json
     value = Hashr.new({"baz" => JSON.parse(h)})
@@ -43,4 +69,7 @@ describe "Hashr" do
       value.baz.foo1.should eq "bar"
     end
   end
+end
+
+class NewObject
 end
