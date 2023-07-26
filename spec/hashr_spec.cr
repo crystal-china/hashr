@@ -18,9 +18,11 @@ describe "Hashr" do
     }
     value = Hashr.new({"foo" => JSON.parse(h.to_json)})
 
+    value.is_a?(Hashr).should be_true
     value.foo.should eq h
+    value.foo.is_a?(Hashr).should be_true
     value.foo.bar.should eq "bar"
-    value.foo.helloWorld.should eq "baz"
+    value.foo.bar.is_a?(Hashr).should be_true
     value.foo.array.should eq ["1", "2", "3"]
     value.foo.literalValue.integer.should eq 100
     value.foo.literalValue.float.should eq 1.23
@@ -33,14 +35,17 @@ describe "Hashr" do
 
   it "works with JSON::Any" do
     h = {
-      "bar"        => "bar",
-      "helloWorld" => "baz",
-      "array"      => ["1", "2", "3"],
+      "bar"   => "bar",
+      "baz"   => {"foo" => "hello"},
+      "array" => ["1", "2", "3"],
     }
     value = Hashr.new(JSON.parse(h.to_json))
 
     value.bar.should eq "bar"
-    value.helloWorld.should eq "baz"
+    value.bar.to_s.is_a?(String).should be_true
+    value.bar.inspect.is_a?(String).should be_true
+    value.baz.should eq({"foo" => "hello"})
+    typeof(value.baz.obj).should eq(Hash(String, JSON::Any) | JSON::Any)
     value.array.should eq ["1", "2", "3"]
   end
 

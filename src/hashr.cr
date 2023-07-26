@@ -18,17 +18,29 @@ class Hashr
 
   macro method_missing(key)
     def {{ key.id }}
-      value = obj[{{ key.id.stringify }}]
+      value = @obj[{{ key.id.stringify }}]
 
       Hashr.new(value)
     end
+
+    # def {{ key.id }}=(value)
+    #   @obj[{{ key.id.stringify }}] = value
+    # end
   end
 
   def ==(other)
-    obj == other
+    @obj == other
   end
 
-  # Can't redefine nil?
+  def to_s(io)
+    @obj.to_s(io)
+  end
+
+  def inspect(io)
+    @obj.inspect(io)
+  end
+
+  # can't redefine nil?
   # def nil?
   #   obj.nil?
   # end
