@@ -62,6 +62,38 @@ describe "Hashr" do
     value.array.should eq ["1", "2", "3"]
   end
 
+  it "use hashr as model object" do
+    contacts = [
+      {
+        id:    1,
+        first: "billy",
+        last:  "zheng",
+        phone: "18612385678",
+        email: "billy@gmail.com",
+      },
+      {
+        id:    2,
+        first: "xuan",
+        last:  "zheng",
+        phone: "18512345678",
+        email: "retired@qq.com",
+      },
+    ]
+
+    models = contacts.map { |e| Hashr.new(e) }
+
+    models.each do |contact|
+      puts "#{contact.first}.#{contact.last}: phone: #{contact.phone}, email: #{contact.email}"
+    end
+
+    billy = models.first
+    puts billy.obj
+
+    billy.phone = "13012345678"
+    billy.phone.should eq "13012345678"
+    puts billy
+  end
+
   it "raise exception if key not exists" do
     h = {"foo" => "bar"}.to_json
     value = Hashr.new({"baz" => JSON.parse(h)})

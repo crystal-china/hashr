@@ -17,15 +17,23 @@ class Hashr
   end
 
   macro method_missing(key)
-    def {{ key.id }}
-      value = @obj[{{ key.id.stringify }}]
+    {% if key.name.ends_with? "=" %}
+      {% k = key.name.gsub(/=/, "").stringify %}
+      def {{ key.name }}(value)
+        v = JSON::Any.new(value)
+        if @obj.is_a? Hash(String, JSON::Any)
+          @obj.as(Hash(String, JSON::Any))[{{ k }}] = v
+        else
+          @obj.as(JSON::Any).as_h[{{ k }}] = v
+        end
+      end
+    {% else %}
+      def {{ key.name }}
+        value = @obj[{{ key.name.stringify }}]
 
-      Hashr.new(value)
-    end
-
-    # def {{ key.id }}=(value)
-    #   @obj[{{ key.id.stringify }}] = value
-    # end
+        Hashr.new(value)
+      end
+    {% end %}
   end
 
   def ==(other)
