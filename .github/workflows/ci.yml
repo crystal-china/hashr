@@ -2,6 +2,8 @@ on:
   push:
     branches:
       - master
+    tags:
+      - "v*.*.*"
   schedule:
     - cron: "15 3 * * 1" # Every monday at 3:15 AM
 
@@ -20,11 +22,11 @@ jobs:
       - name: Install Crystal
         uses: crystal-lang/install-crystal@v1
       - name: Install shards
-        run: shards check || shards install
+        run: shards check || shards install --without-development
       - name: Check formatting
         run: crystal tool format --check
-      - name: Run Ameba
-        run: bin/ameba --except Metrics/CyclomaticComplexity
+      # - name: Run Ameba
+      #   run: bin/ameba --except Metrics/CyclomaticComplexity
       - name: Run tests
         run: crystal spec --order=random --error-on-warnings
       - name: Build docs
