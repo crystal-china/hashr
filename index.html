@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 1.7.3">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Crystal Docs 1.8.2">
 <meta name="crystal_docs.project_version" content="master">
 <meta name="crystal_docs.project_name" content="hashr">
 
@@ -25,6 +26,11 @@
     <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
   </symbol>
 </svg>
+<input type="checkbox" id="sidebar-btn">
+<label for="sidebar-btn" id="sidebar-btn-label">
+  <svg class="open" xmlns="http://www.w3.org/2000/svg" height="2em" width="2em" viewBox="0 0 512 512"><title>Open Sidebar</title><path fill="currentColor" d="M80 96v64h352V96H80zm0 112v64h352v-64H80zm0 112v64h352v-64H80z"></path></svg>
+  <svg class="close" xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 512 512"><title>Close Sidebar</title><path fill="currentColor" d="m118.6 73.4-45.2 45.2L210.7 256 73.4 393.4l45.2 45.2L256 301.3l137.4 137.3 45.2-45.2L301.3 256l137.3-137.4-45.2-45.2L256 210.7Z"></path></svg>
+</label>
 <div class="sidebar">
   <div class="sidebar-header">
     <div class="search-box">
@@ -128,6 +134,34 @@ describe <span class="s">&quot;daily reports&quot;</span> <span class="k">do</sp
     target.qualifiedTotalCount.should eq report.qualified_total_count
   <span class="k">end</span>
 <span class="k">end</span></code></pre>
+<p>You can use Hashr as model object, like this:</p>
+<pre><code class="language-crystal">it <span class="s">&quot;use hashr as model object&quot;</span> <span class="k">do</span>
+    contacts <span class="o">=</span> [
+      {
+        id:    <span class="n">1</span>,
+        first: <span class="s">&quot;billy&quot;</span>,
+        last:  <span class="s">&quot;zheng&quot;</span>,
+        phone: <span class="s">&quot;18612385678&quot;</span>,
+        email: <span class="s">&quot;billy@gmail.com&quot;</span>,
+      },
+      {
+        id:    <span class="n">2</span>,
+        first: <span class="s">&quot;xuan&quot;</span>,
+        last:  <span class="s">&quot;zheng&quot;</span>,
+        phone: <span class="s">&quot;18512345678&quot;</span>,
+        email: <span class="s">&quot;retired@qq.com&quot;</span>,
+      },
+    ]
+
+    models <span class="o">=</span> contacts.map { <span class="o">|</span>e<span class="o">|</span> <span class="t">Hashr</span>.new(e) }
+
+    models.each <span class="k">do</span> <span class="o">|</span>contact<span class="o">|</span>
+      puts <span class="s">&quot;</span><span class="i">#{</span>contact.first<span class="i">}</span><span class="s">.</span><span class="i">#{</span>contact.last<span class="i">}</span><span class="s">: phone: </span><span class="i">#{</span>contact.phone<span class="i">}</span><span class="s">, email: </span><span class="i">#{</span>contact.email<span class="i">}</span><span class="s">&quot;</span>
+    <span class="k">end</span>
+	
+	billy <span class="o">=</span> models.first
+	billy.phone <span class="o">=</span> <span class="s">&quot;13012345678&quot;</span>
+	p billy.name <span class="c"># =&gt; 13012345678</span></code></pre>
 <h2><a id="limit" class="anchor" href="#limit">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
