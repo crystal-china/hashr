@@ -21,7 +21,7 @@ class Hashr
       {% k = key.name.gsub(/=/, "").stringify %}
       def {{ key.name }}(value)
         v = JSON::Any.new(value)
-        if @obj.is_a? Hash(String, JSON::Any)
+        if @obj.as? Hash(String, JSON::Any)
           @obj.as(Hash(String, JSON::Any))[{{ k }}] = v
         else
           @obj.as(JSON::Any).as_h[{{ k }}] = v
@@ -38,6 +38,14 @@ class Hashr
 
   def ==(other)
     @obj == other
+  end
+
+  def [](key)
+    if @obj.as? Hash(String, JSON::Any)
+      @obj.as(Hash(String, JSON::Any))[key]
+    else
+      @obj.as(JSON::Any).as_h[key]
+    end
   end
 
   def to_s(io)

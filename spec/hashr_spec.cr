@@ -68,7 +68,7 @@ describe "Hashr" do
         id:    1,
         first: "billy",
         last:  "zheng",
-        phone: "18612385678",
+        phone: "18612345678",
         email: "billy@gmail.com",
       },
       {
@@ -82,16 +82,25 @@ describe "Hashr" do
 
     models = contacts.map { |e| Hashr.new(e) }
 
-    models.each do |contact|
-      puts "#{contact.first}.#{contact.last}: phone: #{contact.phone}, email: #{contact.email}"
-    end
-
     billy = models.first
-    puts billy.obj
+
+    billy.first.should eq("billy")
+    billy.last.should eq("zheng")
+    billy.phone.should eq("18612345678")
+    billy.email.should eq("billy@gmail.com")
+
+    typeof(billy.obj).should eq(Hash(String, JSON::Any) | JSON::Any)
+    billy.obj.class.should eq(JSON::Any)
 
     billy.phone = "13012345678"
-    billy.phone.should eq "13012345678"
-    puts billy
+
+    billy.first.should eq("billy")
+    billy.last.should eq("zheng")
+    billy.phone.should eq("13012345678")
+    billy.email.should eq("billy@gmail.com")
+
+    billy["email"].should eq("billy@gmail.com")
+    billy["phone"].should eq("13012345678")
   end
 
   it "raise exception if key not exists" do
