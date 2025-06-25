@@ -20,43 +20,33 @@ This shard should only be used in spec.
 
 ## Usage
 
-Following is a example use graphql + spec-kemal
+Following is a example:
 
 ```crystal
-
-require "hashr"
-require "../spec_helper"
+require "./src/hashr"
+require "spec"
 
 describe "daily reports" do
   it "query daily report" do
-    report = ReportFactory.create
+    json_string = "{\"data\":{\"reportQuery\":{\"target\":{\"targetTotalCount\":47,\"processedTotalCount\":44,\"qualifiedTotalCount\":40}}}}"
 
-    post_json "/graphql", body: {query: "query { ... }"}
+    response_hash = Hash(String, JSON::Any).from_json(json_string)
+    # => Get a hash like this:
+    # {"data" =>
+    #  {"reportQuery" =>
+    #   {"target" =>
+    #    {"targetTotalCount" => 47,
+    #     "processedTotalCount" => 44,
+    #     "qualifiedTotalCount" => 40}}}} (Hash(String, JSON::Any))
 
-    p! typeof(response.body)  # => String
-    
-    p! response.body # => "{\"data\":{\"reportQuery\":{\"target\":{\"targetTotalCount\":47,\"processedTotalCount\":44,\"qualifiedTotalCount\":40}}}}"
-
-    response_hash = Hash(String, JSON::Any).from_json(response.body) # => Get a hash like this:
-    # {"data" => {
-    #                "reportQuery" => {
-    #                  "target" => {
-    #                    "targetTotalCount" => report.target_total_count,
-    #                    "processedTotalCount" => report.processed_total_count,
-    #                    "qualifiedTotalCount" => report.qualified_total_count
-    #                  }
-    #                }
-    #              }
-    #     }
-    
     # Instead, verify on the entire response result, we can verify on specified field only.
-    parsed_response = Hashr.new(response)
+    parsed_response = Hashr.new(response_hash)
 
-    # Use nice dot method call.
+    # Use nice dot method call nonation.
     target = parsed_response.data.reportQuery.target
-    
-    target.processedTotalCount.should eq report.processed_total_count
-    target.qualifiedTotalCount.should eq report.qualified_total_count
+
+    target.processedTotalCount.should eq 44
+    target.qualifiedTotalCount.should eq 40
   end
 end
 ```
